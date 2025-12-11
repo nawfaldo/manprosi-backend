@@ -16,6 +16,6 @@ chrono = "0.4"
 # --- UPDATE VERSI SHUTTLE KE 0.50.0 ---
 sea-orm = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"] }
 
-shuttle-actix-web = "0.50.0"
-shuttle-runtime = "0.50.0"
-shuttle-shared-db = { version = "0.50.0", features = ["postgres", "sea-orm"] }
+shuttle-actix-web = "0.57.0"
+shuttle-runtime = "0.57.0"
+shuttle-shared-db = { version = "0.57.0", features = ["postgres"] }
