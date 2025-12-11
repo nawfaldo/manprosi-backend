@@ -1,0 +1,75 @@
+# ----------------------------------------------------------------------------
+# Standard Rust/Cargo
+# ----------------------------------------------------------------------------
+# Folder build hasil kompilasi (Wajib di-ignore karena ukurannya besar)
+/target/
+
+# File backup jika menggunakan text editor tertentu
+**/*.rs.bk
+
+# Cargo.lock:
+# - Untuk Aplikasi (bin): JANGAN ignore ini (biarkan di-commit).
+# - Untuk Library (lib): Boleh di-ignore, tapi sekarang rekomendasinya tetap di-commit.
+# Cargo.lock
+
+# ----------------------------------------------------------------------------
+# Environment Variables & Secrets (Sangat Penting untuk Backend)
+# ----------------------------------------------------------------------------
+# Jangan pernah upload keys/passwords ke Git!
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Kecualikan file contoh agar developer lain tahu format env-nya
+!.env.example
+
+# ----------------------------------------------------------------------------
+# macOS & System Files (Karena Anda pengguna Mac)
+# ----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails (Windows) - Jaga-jaga jika kolaborasi dengan pengguna Windows
+Thumbs.db
+ehthumbs.db
+
+# ----------------------------------------------------------------------------
+# IDE & Editors
+# ----------------------------------------------------------------------------
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+*.code-workspace
+
+# IntelliJ / RustRover
+.idea/
+
+# Vim / Emacs
+*~
+*.swp
+*.swo
+
+# ----------------------------------------------------------------------------
+# Machine Learning & Data (Opsional - Sesuaikan dengan kebutuhan)
+# ----------------------------------------------------------------------------
+# Biasanya data mentah dan model ML berukuran besar tidak dimasukkan ke Git
+# Gunakan DVC (Data Version Control) jika perlu tracking file besar.
+/data/
+/datasets/
+/models/
+*.csv
+*.parquet
+*.pkl
+*.onnx
+
+# ----------------------------------------------------------------------------
+# Logs
+# ----------------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
