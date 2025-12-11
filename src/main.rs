@@ -63,7 +63,7 @@ async fn main(
                 .wrap(
                     Cors::default()
                         .allowed_origin("http://localhost:3000") // Local frontend
-                        .allowed_origin("https://nama-frontend-anda.vercel.app") // Nanti ganti dengan URL Vercel
+                        .allowed_origin("https://manprosi-frontend.vercel.app") // Nanti ganti dengan URL Vercel
                         .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
                         .allowed_headers(vec![actix_web::http::header::CONTENT_TYPE])
                         .supports_credentials(),
