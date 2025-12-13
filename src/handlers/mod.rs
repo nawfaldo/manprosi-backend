@@ -8,3 +8,7 @@ pub mod valve;
 pub mod pump;
 pub mod automation;
 pub mod automation_history;
+pub mod seed;
+pub mod recommendation;
+pub mod pest_control;
+pub mod notification;

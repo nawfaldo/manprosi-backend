@@ -12,6 +12,7 @@ pub struct CreatePlantRequest {
     pub name: String,
     pub quantity: i32,
     pub land_id: i32,
+    pub seed_id: i32,
     pub planted_at: NaiveDateTime, // Format JSON default: "YYYY-MM-DDTHH:MM:SS"
 }
 
@@ -21,6 +22,7 @@ pub struct UpdatePlantRequest {
     pub name: Option<String>,
     pub quantity: Option<i32>,
     pub land_id: Option<i32>,
+    pub seed_id: Option<i32>,
     pub planted_at: Option<NaiveDateTime>,
 }
 
@@ -33,6 +35,7 @@ pub async fn create_plant(
         name: Set(form.name.clone()),
         quantity: Set(form.quantity),
         land_id: Set(form.land_id),
+        seed_id: Set(form.seed_id), // <--- Ditambahkan
         planted_at: Set(form.planted_at),
         ..Default::default()
     };
@@ -104,44 +107,20 @@ pub async fn update_plant(
 ) -> impl Responder {
     let id = path.into_inner();
 
-    // 1. Cari data lama
     let existing_plant = match plant::Entity::find_by_id(id).one(&data.db).await {
         Ok(Some(p)) => p,
-        Ok(None) => {
-            return HttpResponse::NotFound().json(serde_json::json!({
-                "success": false,
-                "error": "Plant not found"
-            }))
-        }
-        Err(e) => {
-            return HttpResponse::InternalServerError().json(serde_json::json!({
-                "success": false,
-                "error": format!("Database error: {:?}", e)
-            }))
-        }
+        Ok(None) => return HttpResponse::NotFound().json(serde_json::json!({"success": false, "error": "Plant not found"})),
+        Err(e) => return HttpResponse::InternalServerError().json(serde_json::json!({"success": false, "error": format!("{:?}", e)})),
     };
 
-    // 2. Convert ke ActiveModel
     let mut active_model: plant::ActiveModel = existing_plant.into();
 
-    // 3. Update field jika ada di request
-    if let Some(name) = &form.name {
-        active_model.name = Set(name.clone());
-    }
+    if let Some(name) = &form.name { active_model.name = Set(name.clone()); }
+    if let Some(quantity) = form.quantity { active_model.quantity = Set(quantity); }
+    if let Some(land_id) = form.land_id { active_model.land_id = Set(land_id); }
+    if let Some(seed_id) = form.seed_id { active_model.seed_id = Set(seed_id); } // <--- Ditambahkan
+    if let Some(planted_at) = form.planted_at { active_model.planted_at = Set(planted_at); }
 
-    if let Some(quantity) = form.quantity {
-        active_model.quantity = Set(quantity);
-    }
-
-    if let Some(land_id) = form.land_id {
-        active_model.land_id = Set(land_id);
-    }
-
-    if let Some(planted_at) = form.planted_at {
-        active_model.planted_at = Set(planted_at);
-    }
-
-    // 4. Simpan perubahan
     match active_model.update(&data.db).await {
         Ok(p) => HttpResponse::Ok().json(serde_json::json!({
             "success": true,

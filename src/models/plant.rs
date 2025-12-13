@@ -9,6 +9,7 @@ pub struct Model {
     pub name: String,
     pub quantity: i32,
     pub land_id: i32,
+    pub seed_id: i32, // <--- Ditambahkan
     pub planted_at: DateTime,
 }
 
@@ -22,11 +23,27 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Land,
+    // <--- Relasi ke Seed Ditambahkan
+    #[sea_orm(
+        belongs_to = "super::seed::Entity",
+        from = "Column::SeedId",
+        to = "super::seed::Column::Id",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    Seed,
 }
 
 impl Related<super::land::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Land.def()
+    }
+}
+
+// <--- Implementasi Related ke Seed
+impl Related<super::seed::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Seed.def()
     }
 }
 

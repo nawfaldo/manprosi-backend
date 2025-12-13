@@ -1,5 +1,17 @@
 use sea_orm::entity::prelude::*;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+
+// 1. Definisikan Enum Type
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
+#[sea_orm(rs_type = "String", db_type = "Text")]
+pub enum AutomationType {
+    #[sea_orm(string_value = "Watering")]
+    Watering,
+    #[sea_orm(string_value = "Fertilization")]
+    Fertilization,
+    #[sea_orm(string_value = "PestControl")]
+    PestControl,
+}
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize)]
 #[sea_orm(table_name = "automation")]
@@ -7,11 +19,17 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
     pub name: String,
+    
+    // 2. Tambahkan Field Type
+    #[sea_orm(column_name = "type")]
+    pub automation_type: AutomationType,
+
     pub sensor_id: i32,
     pub sensor_value: f64,
-    pub pump_id: Option<i32>,
-    pub valve_id: Option<i32>,
+    pub pump_id: i32,
+    pub valve_id: i32,
     pub land_id: i32,
+    pub dispense_amount: f64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
